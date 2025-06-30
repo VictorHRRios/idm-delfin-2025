@@ -27,9 +27,22 @@ func main() {
 	e.Static("/static", "assets")
 	e.Renderer = newTemplate()
 
-	e.GET("/something", func(c echo.Context) error {
+	e.GET("/", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "index.html", nil)
+	})
+
+	e.GET("/mapa", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "map.html", nil)
 	})
+
+	e.GET("/info", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "about.html", nil)
+	})
+
+	e.GET("/creditos", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "credits.html", nil)
+	})
+
 	e.POST("/update-month", updateMonthHandler)
 	e.POST("/update-year", updateYearHandler)
 
