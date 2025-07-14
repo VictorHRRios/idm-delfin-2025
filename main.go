@@ -68,6 +68,7 @@ func updateYearHandler(c echo.Context) error {
 	return c.Render(200, "oob-year", year)
 }
 func upload(c echo.Context) error {
+	file_name := "predictions.json"
 	file, err := c.FormFile("file")
 	if err != nil {
 		return err
@@ -78,7 +79,7 @@ func upload(c echo.Context) error {
 	}
 	defer src.Close()
 
-	dst, err := os.Create(path.Join("./assets", file.Filename))
+	dst, err := os.Create(path.Join("./assets", file_name))
 	if err != nil {
 		return err
 	}
@@ -88,5 +89,5 @@ func upload(c echo.Context) error {
 		return err
 	}
 
-	return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded successfully", file.Filename))
+	return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded successfully", file_name))
 }

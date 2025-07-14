@@ -9,30 +9,45 @@ var newData = null;
 var year = 2015;
 var month = 1;
 
-$.getJSON("static/states.geojson", function(data) {
-	L.geoJson(data, {
-		style: {
-			color: '#666',
-			weight: 1,
-			fillOpacity: 0
-		}
-	}).addTo(map);
+document.getElementById('upload-form').addEventListener('htmx:afterRequest', function() {
+	loadGeoDataSequentially();
 });
 
-$.getJSON("/static/municipalities.geojson", function(data) {
-	console.log("Municipalities data loaded", data);
-	municipalitiesData = data;
-	updateMapWithDate(year, month);
-}).fail(function() {
-	console.error("Failed to load municipalities GeoJSON");
-});
+async function loadGeoDataSequentially() {
+	try {
+		const statesResponse = await fetch("static/states.geojson");
+		if (!statesResponse.ok) throw new Error("Failed to load states.geojson");
+		const statesData = await statesResponse.json();
 
-$.getJSON("/static/predictions.json", function(data) {
-	console.log("new data loaded", data);
-	updateData(data)
-}).fail(function() {
-	console.error("Failed to load update data GeoJSON");
-});
+		L.geoJson(statesData, {
+			style: {
+				color: '#666',
+				weight: 1,
+				fillOpacity: 0
+			}
+		}).addTo(map);
+
+		const municipalitiesResponse = await fetch("/static/municipalities.geojson");
+		if (!municipalitiesResponse.ok) throw new Error("Failed to load municipalities.geojson");
+		const municipalitiesData = await municipalitiesResponse.json();
+
+		console.log("Municipalities data loaded", municipalitiesData);
+		window.municipalitiesData = municipalitiesData;
+		updateMapWithDate(year, month);
+
+		const predictionsResponse = await fetch("/static/predictions.json");
+		if (!predictionsResponse.ok) throw new Error("Failed to load predictions.json");
+		const predictionsData = await predictionsResponse.json();
+
+		console.log("New data loaded", predictionsData);
+		updateData(predictionsData);
+
+	} catch (error) {
+		console.error(error.message);
+	}
+}
+
+loadGeoDataSequentially();
 
 yearInput.addEventListener('input', function(event) {
 	year = event.target.value;
@@ -48,11 +63,9 @@ monthInput.addEventListener('input', function(event) {
 
 function updateData(newDataArray) {
 	if (!municipalitiesData || !municipalitiesData.features) {
-		console.log("Data updated successfully not.");
 		console.warn("Municipalities data is not loaded.");
 		return;
 	}
-	console.log("inside")
 
 	newDataArray.forEach(entry => {
 		const { Año, Municipio, Mes, total, id_entidad } = entry;
@@ -112,8 +125,7 @@ function updateMapWithDate(selectedYear, selectedMonth) {
 
 			layer.bindPopup(
 
-				`<strong>${props.state_name}</strong><br/>
-				<strong>${props.mun_name}</strong><br/>
+				`<strong>${props.mun_name}</strong><br/>
                  Código: ${props.mun_code}<br/>
                  Estado: ${props.state_code}<br/>
                  IDM NM (${selectedYear}-${month}): ${value}`
