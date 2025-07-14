@@ -44,7 +44,7 @@
 
 {{ define "mapsettings" }}
 <div
-	class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 relative mb-6">
+	class="box-border size-1/2 mx-auto w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 relative mb-6">
 	<label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Año: {{ template
 		"oob-year" . }}
 	</label>
@@ -58,6 +58,9 @@
 		class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
 		hx-post="/update-month" hx-trigger="change, input" hx-swap="none">
 
-
+	<form hx-post="/upload" hx-encoding="multipart/form-data" hx-target="this">
+		Files: <input type="file" name="file"><br><br>
+		<input type="submit" value="Submit">
+	</form>
 </div>
 {{ end }}

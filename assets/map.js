@@ -5,6 +5,7 @@ var map = new L.Map("map", { center: [19.4326, -99.13], zoom: 5 })
 
 var currentGeoJsonLayer = null;
 var municipalitiesData = null;
+var newData = null;
 var year = 2015;
 var month = 1;
 
@@ -26,6 +27,13 @@ $.getJSON("/static/municipalities.geojson", function(data) {
 	console.error("Failed to load municipalities GeoJSON");
 });
 
+$.getJSON("/static/predictions.json", function(data) {
+	console.log("new data loaded", data);
+	updateData(data)
+}).fail(function() {
+	console.error("Failed to load update data GeoJSON");
+});
+
 yearInput.addEventListener('input', function(event) {
 	year = event.target.value;
 	console.log("Year changed to:", year);
@@ -37,6 +45,42 @@ monthInput.addEventListener('input', function(event) {
 	console.log("Month changed to:", month);
 	updateMapWithDate(year, month);
 });
+
+function updateData(newDataArray) {
+	if (!municipalitiesData || !municipalitiesData.features) {
+		console.log("Data updated successfully not.");
+		console.warn("Municipalities data is not loaded.");
+		return;
+	}
+	console.log("inside")
+
+	newDataArray.forEach(entry => {
+		const { Año, Municipio, Mes, total, id_entidad } = entry;
+
+		const feature = municipalitiesData.features.find(f =>
+			f.properties.state_code === id_entidad &&
+			f.properties.mun_name === Municipio
+		);
+
+		if (!feature) {
+			console.warn(`No match found for: ${id_entidad} - ${Municipio}`);
+			return;
+		}
+
+		if (!feature.properties.violence) {
+			feature.properties.violence = {};
+		}
+
+		if (!feature.properties.violence[Año]) {
+			feature.properties.violence[Año] = {};
+		}
+
+		feature.properties.violence[Año][Mes] = total;
+	});
+
+	console.log("Data updated successfully.");
+	updateMapWithDate(year, month);
+}
 
 function updateMapWithDate(selectedYear, selectedMonth) {
 	if (!municipalitiesData) {
@@ -67,7 +111,9 @@ function updateMapWithDate(selectedYear, selectedMonth) {
 			const value = props.violence?.[selectedYear]?.[selectedMonth] ?? "Sin datos";
 
 			layer.bindPopup(
-				`<strong>${props.mun_name}</strong><br/>
+
+				`<strong>${props.state_name}</strong><br/>
+				<strong>${props.mun_name}</strong><br/>
                  Código: ${props.mun_code}<br/>
                  Estado: ${props.state_code}<br/>
                  IDM NM (${selectedYear}-${month}): ${value}`
@@ -77,13 +123,13 @@ function updateMapWithDate(selectedYear, selectedMonth) {
 }
 
 function getColorForValue(value) {
-	if (value === "Sin datos") return "#CCCCCC";
+	if (value === 0) return "#CCCCCC";
 
 	const numericValue = Number(value);
 	if (isNaN(numericValue)) return "#CCCCCC";
 
 	const min = 50;
-	const max = 2000;
+	const max = 800;
 
 	if (numericValue <= min) return "#4CAF50";
 

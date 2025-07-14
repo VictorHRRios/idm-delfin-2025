@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"io"
 	"net/http"
+	"os"
+	"path"
 
 	"github.com/labstack/echo/v4"
 )
@@ -39,9 +42,15 @@ func main() {
 		return c.Render(http.StatusOK, "about.html", nil)
 	})
 
+	e.GET("/datos", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "data.html", nil)
+	})
+
 	e.GET("/creditos", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "credits.html", nil)
 	})
+
+	e.POST("/upload", upload)
 
 	e.POST("/update-month", updateMonthHandler)
 	e.POST("/update-year", updateYearHandler)
@@ -57,4 +66,27 @@ func updateMonthHandler(c echo.Context) error {
 func updateYearHandler(c echo.Context) error {
 	year := c.FormValue("year")
 	return c.Render(200, "oob-year", year)
+}
+func upload(c echo.Context) error {
+	file, err := c.FormFile("file")
+	if err != nil {
+		return err
+	}
+	src, err := file.Open()
+	if err != nil {
+		return err
+	}
+	defer src.Close()
+
+	dst, err := os.Create(path.Join("./assets", file.Filename))
+	if err != nil {
+		return err
+	}
+	defer dst.Close()
+
+	if _, err = io.Copy(dst, src); err != nil {
+		return err
+	}
+
+	return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded successfully", file.Filename))
 }
