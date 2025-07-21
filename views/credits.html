@@ -12,15 +12,32 @@
 <body class="dark:bg-gray-800 dark:text-gray-200 ">
 
 	{{ template "header" . }}
-	<div class="p-6 font-mono">
+	<div class="p-6 font-mono max-w-4xl mx-auto">
 
 		<h1 class="text-2xl font-semibold mb-4">Créditos</h1>
 		<div class="text-base text-gray-300 space-y-4">
-			<p>
-				Este proyecto fue realizado por Víctor Hugo Ramírez Ríos,
-				con
-				la investigadora Gabriela Yanez como supervisora de la estancia de investigación.
+			<p class="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+				Este proyecto fue realizado por <strong>Víctor Hugo Ramírez Ríos</strong> como parte de
+				una estancia de investigación
+				en la <strong>Benemérita Universidad Autónoma de Puebla (BUAP)</strong>, bajo la
+				supervisión de la investigadora <strong>Dra. Gabriela Yáñez</strong>.
+				<br><br>
+				Agradezco profundamente el apoyo del <strong>Programa Delfín</strong> por hacer posible
+				esta valiosa experiencia académica,
+				así como a mi institución de origen, la <strong>Universidad de Sonora</strong>, por su
+				respaldo y formación.
+				<br><br>
+				También extiendo mi agradecimiento a la <strong>BUAP</strong> por brindarme el espacio y
+				los recursos necesarios para desarrollar este proyecto,
+				y a todas las personas que contribuyeron directa o indirectamente a su realización.
 			</p>
+		</div>
+		<br>
+		<div class="flex justify-center items-center gap-8 flex-wrap mb-10">
+			<img src="/static/buap.png" alt="BUAP Logo" class="h-36 object-contain" />
+			<img src="/static/unison.jpg" alt="Unison Logo"
+				class="h-36 object-contain rounded-md shadow-sm" />
+			<img src="/static/delfin.png" alt="Delfín Logo" class="h-36 object-contain" />
 		</div>
 	</div>
 

@@ -9,18 +9,45 @@
 
 </head>
 
-<body class="dark:bg-gray-800 dark:text-gray-200 ">
+<body class="dark:bg-gray-800 dark:text-gray-200">
 
 	{{ template "header" . }}
 
-	<div class="p-6 font-mono">
-
+	<div class="p-6 font-mono max-w-4xl mx-auto">
 		<h1 class="text-2xl font-semibold mb-4">Proyecto Delfín: Índice de Violencia</h1>
+
 		<div class="text-base text-gray-300 space-y-4">
 			<p>
-				Este proyecto consiste en predecir el índice de violencia en los municipios de México
-				usando redes nueronales. Se utilizaron datos del INEGI del 2015 hasta el 2025
-				para entrenar la red neuronal.
+				Este proyecto tiene como objetivo predecir el índice de violencia en los municipios de
+				México
+				utilizando modelos de redes neuronales entrenados con datos del INEGI desde el año 2015
+				hasta 2025.
+			</p>
+
+			<p>
+				Como parte del proceso, se realizó un análisis exhaustivo de los datos que incluyó la
+				exploración de gráficas,
+				limpieza y preprocesamiento, generación de nuevas características, y la separación del
+				conjunto de datos
+				en entrenamiento y validación. También se llevó a cabo una búsqueda de hiperparámetros
+				para optimizar el rendimiento del modelo.
+			</p>
+
+			<p>
+				El resultado de este proceso fue un modelo capaz de predecir patrones de violencia de
+				forma geoespacial
+				y temporal. Para facilitar la visualización de los resultados, se desarrolló una página
+				web interactiva
+				que muestra un mapa de la República Mexicana. En este mapa se reflejan los niveles de
+				predicción por municipio
+				según el mes y año seleccionados.
+			</p>
+
+			<p>
+				Este proyecto fue realizado como parte del <strong>Programa Delfín</strong>, con el
+				objetivo de aplicar conocimientos en ciencia de datos,
+				inteligencia artificial y desarrollo web para contribuir al análisis de problemáticas
+				sociales desde un enfoque técnico y visual.
 			</p>
 		</div>
 	</div>
