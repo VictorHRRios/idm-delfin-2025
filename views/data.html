@@ -1,18 +1,97 @@
+<!DOCTYPE html>
 <html class="h-full">
 
 <head>
-	<title>BUAP DELFÍN - Datos</title>
+	<title>BUAP DELFÍN - Resultados</title>
 	<meta charset="UTF-8">
 	<script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
 	<link href="static/output.css" rel="stylesheet">
 	<link rel="icon" href="static/buap.ico" type="image/vnd.microsoft.icon">
-
 </head>
 
-<body class="dark:bg-gray-800">
 
-	{{ template "header" . }}
+{{ template "header" . }}
 
+<body class="dark:bg-gray-800 dark:text-gray-200 ">
+	<div class="p-6 font-mono">
+
+		<h1 class="text-2xl font-semibold mb-4">Model Summary: <span
+				class="text-indigo-400">"functional_1"</span></h1>
+
+		<div class="mt-2 text-xs text-gray-300 space-y-1">
+			<p><strong>Total params:</strong> 280,145 (1.07 MB)</p>
+			<p><strong>Trainable params:</strong> 280,145 (1.07 MB)</p>
+			<p><strong>Non-trainable params:</strong> 0 (0.00 B)</p>
+		</div>
+
+		<h2 class="text-xl font-semibold mt-8 mb-2">Métricas de Entrenamiento</h2>
+		<div class="mb-4 text-base text-gray-300 space-y-4">
+			<p>Para el entrenamiento del modelo, primero se normalizaron los datos de los estados,
+				municipios y la
+				fecha.</p>
+			<p>Para la fecha, separé el año y los meses. En el caso de los meses, utilicé funciones seno y
+				coseno
+				para generar características que permitieran al modelo entender la naturaleza periódica
+				de estos
+				datos. Para el año, apliqué una normalización estándar.</p>
+			<p>Debido a la gran cantidad de muestras en los municipios, decidí usar una capa de
+				<em>embedding</em>
+				para no incrementar la complejidad del modelo. Para ello, utilicé un
+				<em>LabelEncoder</em> que
+				transforma etiquetas categóricas en valores numéricos, y posteriormente pasé estos
+				valores por
+				la capa de <em>embedding</em>.
+			</p>
+		</div>
+
+		<div class="grid md:grid-cols-2 gap-6 mb-10">
+			<div>
+				<img src="static/loss.png" alt="Loss Curve" class="rounded-lg border border-gray-600" />
+				<p class="mt-2 text-base text-gray-400 italic">Figura 1: Entrenamiento y validación a
+					través de
+					las épocas.</p>
+			</div>
+			<div>
+				<img src="static/realvspred.png" alt="Real vs Predicted"
+					class="rounded-lg border border-gray-600" />
+				<p class="mt-2 text-base text-gray-400 italic">Figura 2: Valores reales vs predicciones
+					para el
+					conjunto de prueba.</p>
+			</div>
+		</div>
+
+		<h2 class="text-xl font-semibold mb-2">Observaciones</h2>
+		<div class="text-base text-gray-300 space-y-4">
+			<p>El modelo generaliza bien, como se puede observar en la curva de pérdida. Sin embargo, al
+				analizar la
+				gráfica de valores reales vs. predichos, se nota que hay algunos valores que el modelo
+				no
+				predice con buena exactitud, especialmente cuando los datos tienen valores más altos.
+			</p>
+
+			<p>Considero que este proyecto tiene margen de mejora al probar con las siguientes metodologías:
+			</p>
+			<ul class="list-disc ml-6 space-y-2">
+				<li>Enfocarse en un solo estado. Existe mucha variabilidad en el índice de violencia
+					según el
+					estado, y factores como economía, población, clima, costumbres y festividades
+					son
+					únicos. Aislar el problema por estado puede ayudar a capturar mejor las
+					tendencias.</li>
+				<li>Relacionando con el punto anterior, incluir otros datos de entrada que tengan
+					correlación
+					con el índice de violencia podría aumentar la precisión del modelo.</li>
+				<li>Acontecimientos como la pandemia de COVID-19 también afectan los resultados. El
+					modelo
+					actual no toma esto en cuenta, por lo que sería importante incorporar este tipo
+					de
+					eventos.</li>
+				<li>Probar diferentes arquitecturas de redes neuronales puede ayudar a comparar y
+					validar
+					mejoras en el rendimiento.</li>
+			</ul>
+		</div>
+	</div>
 </body>
 
 </html>

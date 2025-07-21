@@ -13,7 +13,11 @@ document.getElementById('upload-form').addEventListener('htmx:afterRequest', fun
 	loadGeoDataSequentially();
 });
 
+
 async function loadGeoDataSequentially() {
+	const loading = document.getElementById("loading-notification");
+	loading.classList.remove("hidden");
+
 	try {
 		const statesResponse = await fetch("static/states.geojson");
 		if (!statesResponse.ok) throw new Error("Failed to load states.geojson");
@@ -44,6 +48,8 @@ async function loadGeoDataSequentially() {
 
 	} catch (error) {
 		console.error(error.message);
+	} finally {
+		loading.classList.add("hidden");
 	}
 }
 

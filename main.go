@@ -42,7 +42,7 @@ func main() {
 		return c.Render(http.StatusOK, "about.html", nil)
 	})
 
-	e.GET("/datos", func(c echo.Context) error {
+	e.GET("/resultados", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "data.html", nil)
 	})
 

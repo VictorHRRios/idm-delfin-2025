@@ -16,6 +16,19 @@
 
 	{{ template "header" . }}
 	<div class="h-screen flex">
+
+
+		<div id="loading-notification"
+			class="fixed top-4 left-4 z-50 flex items-center gap-2 rounded-lg bg-blue-100 px-4 py-2 text-sm text-blue-800 shadow-md dark:bg-blue-900 dark:text-blue-100 hidden">
+			<svg class="w-5 h-5 animate-spin text-blue-500 dark:text-blue-300" fill="none"
+				stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+					stroke-width="4"></circle>
+				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z">
+				</path>
+			</svg>
+			<span>Cargando datos...</span>
+		</div>
 		{{ template "map" . }}
 
 		{{ template "mapsettings" . }}
@@ -48,7 +61,7 @@
 	<label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Año: {{ template
 		"oob-year" . }}
 	</label>
-	<input id="year" name="year" type="range" min="2015" max="2035" value="2015" step="1"
+	<input id="year" name="year" type="range" min="2015" max="2029" value="2015" step="1"
 		class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
 		hx-post="/update-year" hx-trigger="change, input" hx-swap="none">
 	<label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mes: {{ template
@@ -57,6 +70,16 @@
 	<input id="month" name="month" type="range" min="1" max="12" value="1" step="1"
 		class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
 		hx-post="/update-month" hx-trigger="change, input" hx-swap="none">
+
+	<div id="prediction-message"
+		class="mt-4 flex items-center justify-center gap-2 rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-2 text-sm text-yellow-800 dark:border-yellow-600 dark:bg-yellow-700/20 dark:text-yellow-300 shadow-sm transition">
+		<svg class="w-5 h-5 text-yellow-500 dark:text-yellow-300" fill="none" stroke="currentColor"
+			stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+			<path stroke-linecap="round" stroke-linejoin="round"
+				d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+		</svg>
+		<span><strong>Nota:</strong> Estas viendo predicciones</span>
+	</div>
 
 	<form id="upload-form" hx-post="/upload" hx-encoding="multipart/form-data" hx-target="#upload-response"
 		class="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6 md:p-8 space-y-4 w-full max-w-sm mx-auto">
@@ -74,4 +97,25 @@
 	<div id="upload-response" class="mt-4 text-sm text-gray-700 dark:text-gray-300 text-center"></div>
 
 </div>
+
+
+<script>
+	function checkPredictionStatus() {
+		const year = parseInt(document.getElementById('year').value);
+		const month = parseInt(document.getElementById('month').value);
+		const message = document.getElementById('prediction-message');
+
+		if (year > 2025 || (year === 2025 && month > 3)) {
+			message.classList.remove('hidden');
+		} else {
+			message.classList.add('hidden');
+		}
+	}
+
+	document.getElementById('year').addEventListener('input', checkPredictionStatus);
+	document.getElementById('month').addEventListener('input', checkPredictionStatus);
+
+	// Run on initial load too
+	document.addEventListener('DOMContentLoaded', checkPredictionStatus);
+</script>
 {{ end }}
