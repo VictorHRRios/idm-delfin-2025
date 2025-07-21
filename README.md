@@ -11,7 +11,7 @@ Se utilizó un conjunto de datos del **INEGI** que abarca desde 2015 hasta 2025 
 ## Tecnologías Utilizadas
 
 - **Python** – para procesamiento de datos y entrenamiento del modelo (con bibliotecas como Pandas, Scikit-learn, etc.).
-- **Redes Neuronales** – para predicción del índice de violencia.
+- **Redes Neuronales TensorFlow** – para predicción del índice de violencia.
 - **Tailwind CSS** – para diseño responsivo en modo claro y oscuro.
 - **Leaflet.js** – para visualización de datos geoespaciales en el mapa.
 - **HTMX** – para interactividad ligera sin recargar la página.
@@ -39,7 +39,6 @@ Se utilizó un conjunto de datos del **INEGI** que abarca desde 2015 hasta 2025 
 ## Sitio Web Interactivo
 
 La página web incluye:
-- Modo claro y oscuro con botón de alternancia.
 - Controles de año y mes con rangos de 2015 a 2035.
 - Notificación automática cuando se visualizan predicciones futuras (a partir de abril 2025).
 - Subida de archivos GeoJSON personalizados.
@@ -49,7 +48,7 @@ La página web incluye:
 
 | Gráfica de pérdida | Real vs Predicción |
 |--------------------|--------------------|
-| ![Loss](static/loss.png) | ![Real vs Pred](static/realvspred.png) |
+| ![Loss](assets/loss.png) | ![Real vs Pred](assets/realvspred.png) |
 
 ## Créditos
 
@@ -63,9 +62,9 @@ Agradecimientos especiales al:
 - **Dra. Gabriela Yáñez**, por su guía y apoyo académico.
 
 <p align="center">
-  <img src="static/buap.png" alt="BUAP" height="60" />
-  <img src="static/unison.jpg" alt="Unison" height="60" style="border-radius: 6px; margin: 0 10px;" />
-  <img src="static/delfin.png" alt="Delfin" height="60" />
+  <img src="assets/buap.png" alt="BUAP" height="60" />
+  <img src="assets/unison.jpg" alt="Unison" height="60" style="border-radius: 6px; margin: 0 10px;" />
+  <img src="assets/delfin.png" alt="Delfin" height="60" />
 </p>
 
 
