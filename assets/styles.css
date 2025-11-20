@@ -10,7 +10,7 @@
 }
 
 body {
-  margin: 0;
+  margin: auto;
   font-family: Arial, sans-serif;
   background-color: var(--bg-color);
   color: var(--fg-color);
@@ -34,12 +34,13 @@ h1 {
 
 main {
   margin: auto;
-  max-width: 60em;
+  max-width: 40em;
 }
 
 nav {
   display: flex;
   gap: 1rem;
+  font-size: 2rem;
   align-items: center;
   background-color: var(--bg-color);
   padding: 10px 24px;
@@ -80,7 +81,7 @@ img {
 .results {
   display: grid;
   grid-template-columns: 3fr 1fr;
-  gap: 5rem;
+  gap: 1rem;
 }
 
 form {
