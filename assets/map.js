@@ -15,7 +15,7 @@ async function loadGeoDataSequentially() {
   const loading = document.getElementById("loading-notification");
 
   try {
-    const municipalitiesResponse = await fetch("/assets/data.json");
+    const municipalitiesResponse = await fetch("assets/data.json");
     if (!municipalitiesResponse.ok)
       throw new Error("Failed to load municipalities.geojson");
     municipalitiesData = await municipalitiesResponse.json();
