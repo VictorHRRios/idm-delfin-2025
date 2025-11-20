@@ -1,12 +1,13 @@
 const yearInput = document.getElementById("year");
 const monthInput = document.getElementById("month");
+
+const yearDisplay = document.getElementById("year-display");
+const monthDisplay = document.getElementById("month-display");
 var map = new L.Map("map", { center: [19.4326, -99.13], zoom: 5 }).addLayer(
   new L.TileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
 );
 
-var currentGeoJsonLayer = null;
 var municipalitiesData = null;
-var newData = null;
 var year = 2015;
 var month = 1;
 
@@ -14,22 +15,12 @@ async function loadGeoDataSequentially() {
   const loading = document.getElementById("loading-notification");
 
   try {
-    const municipalitiesResponse = await fetch(
-      "/static/municipalities.geojson",
-    );
+    const municipalitiesResponse = await fetch("/assets/data.json");
     if (!municipalitiesResponse.ok)
       throw new Error("Failed to load municipalities.geojson");
-    const municipalitiesData = await municipalitiesResponse.json();
+    municipalitiesData = await municipalitiesResponse.json();
 
-    window.municipalitiesData = municipalitiesData;
     updateMapWithDate(year, month);
-
-    const predictionsResponse = await fetch("/static/predictions.json");
-    if (!predictionsResponse.ok)
-      throw new Error("Failed to load predictions.json");
-    const predictionsData = await predictionsResponse.json();
-
-    await updateData(predictionsData);
   } catch (error) {
     console.error(error.message);
   } finally {
@@ -41,14 +32,17 @@ loadGeoDataSequentially();
 
 yearInput.addEventListener("input", function (event) {
   year = event.target.value;
+  yearDisplay.textContent = year;
   updateMapWithDate(year, month);
 });
 
 monthInput.addEventListener("input", function (event) {
   month = event.target.value;
+  monthDisplay.textContent = month;
   updateMapWithDate(year, month);
 });
 
+/*
 async function updateData(newDataArray) {
   if (!municipalitiesData || !municipalitiesData.features) {
     console.warn("Municipalities data is not loaded.");
@@ -81,6 +75,7 @@ async function updateData(newDataArray) {
 
   updateMapWithDate(year, month);
 }
+*/
 
 function updateMapWithDate(selectedYear, selectedMonth) {
   if (!municipalitiesData) {
@@ -88,11 +83,7 @@ function updateMapWithDate(selectedYear, selectedMonth) {
     return;
   }
 
-  if (currentGeoJsonLayer) {
-    map.removeLayer(currentGeoJsonLayer);
-  }
-
-  currentGeoJsonLayer = L.geoJson(municipalitiesData, {
+  L.geoJson(municipalitiesData, {
     style: function (feature) {
       const props = feature.properties;
       const value = props.violence?.[selectedYear]?.[selectedMonth] ?? 0;

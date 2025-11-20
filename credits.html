@@ -3,12 +3,17 @@
     <title>BUAP DELFÍN - ÍNDICE</title>
     <meta charset="UTF-8" />
     <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
-    <link href="static/styles.css" rel="stylesheet" />
-    <link rel="icon" href="static/buap.ico" type="image/vnd.microsoft.icon" />
+    <link href="assets/styles.css" rel="stylesheet" />
+    <link rel="icon" href="assets/buap.ico" type="image/vnd.microsoft.icon" />
   </head>
 
   <body>
-    {{ template "header" . }}
+    <nav>
+      <a href="/index.html">Inicio</a>
+      <a href="/map.html">Mapa de los resultados</a>
+      <a href="/data.html">Resultados</a>
+      <a href="/credits.html">Créditos</a>
+    </nav>
     <main>
       <h1>Créditos</h1>
       <p>
@@ -20,22 +25,19 @@
         <br /><br />
         Agradezco profundamente el apoyo del
         <strong>Programa Delfín</strong> por hacer posible esta valiosa
-        experiencia académica, así como a mi institución de origen, la
+        experiencia académica, así como a mi institución, la
         <strong>Universidad de Sonora</strong>, por su respaldo y formación.
         <br /><br />
         También extiendo mi agradecimiento a la <strong>BUAP</strong> por
         brindarme el espacio y los recursos necesarios para desarrollar este
-        proyecto, y a todas las personas que contribuyeron directa o
-        indirectamente a su realización.
+        proyecto.
       </p>
       <br />
       <p class="img-tray">
-        <img class="logo" src="/static/images/buap.png" alt="BUAP Logo" />
-        <img class="logo" src="/static/images/unison.jpg" alt="Unison Logo" />
-        <img class="logo" src="/static/images/delfin.png" alt="Delfín Logo" />
+        <img class="logo" src="/assets/images/buap.png" alt="BUAP Logo" />
+        <img class="logo" src="/assets/images/unison.jpg" alt="Unison Logo" />
+        <img class="logo" src="/assets/images/delfin.png" alt="Delfín Logo" />
       </p>
-
-      <script src="static/images/map.js/"></script>
     </main>
   </body>
 </html>

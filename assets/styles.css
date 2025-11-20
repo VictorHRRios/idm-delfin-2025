@@ -2,11 +2,11 @@
   --bg-color: #1e1e1e;
   --fg-color: #f5f5f5;
   --subtle-color: #888;
-  --primary-color: #bb86fc;
+  --primary-color: #aafcb8;
   --input-bg: #2a2a2a;
   --input-border: #444;
-  --button-bg: #7e57c2;
-  --button-hover: #5c4db1;
+  --button-bg: #75fa8b;
+  --button-hover: #07c527;
 }
 
 body {
@@ -19,7 +19,11 @@ body {
 
 a {
   text-decoration: none;
-  color: var(--fg-color);
+  color: var(--button-bg);
+}
+
+a:hover {
+  color: var(--button-hover);
 }
 
 h1 {
@@ -68,8 +72,8 @@ img {
 }
 
 #map {
-  width: 60em;
-  height: 60em;
+  width: 100%;
+  height: 30rem;
 }
 
 .results {
@@ -79,6 +83,7 @@ img {
 }
 
 form {
+  padding: 1rem;
   border-radius: 5px;
   display: flex;
   flex-direction: column;

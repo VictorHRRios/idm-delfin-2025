@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+  <head>
+    <title>BUAP DELFÍN - Resultados</title>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
+    <link href="assets/styles.css" rel="stylesheet" />
+    <link
+      rel="icon"
+      href="assets/images/buap.ico"
+      type="image/vnd.microsoft.icon"
+    />
+  </head>
+
+  <nav>
+    <a href="/index.html">Inicio</a>
+    <a href="/map.html">Mapa de los resultados</a>
+    <a href="/data.html">Resultados</a>
+    <a href="/credits.html">Créditos</a>
+  </nav>
+
+  <body>
+    <main>
+      <h1>Módelo por Busqueda de Hiper-parámetros</h1>
+      <p><strong>Total params:</strong> 280,145 (1.07 MB)</p>
+      <p><strong>Trainable params:</strong> 280,145 (1.07 MB)</p>
+      <p><strong>Non-trainable params:</strong> 0 (0.00 B)</p>
+
+      <h2>Métricas de Entrenamiento</h2>
+      <p>
+        Para el entrenamiento del modelo, se normalizaron los datos de los
+        estados, municipios y la fecha.
+      </p>
+      <p>
+        Para la fecha, se separó en año y meses. En el caso de los meses, se
+        utilizó las funciones de seno y coseno para generar características que
+        permitieran al modelo entender la naturaleza periódica de estos datos.
+        En cambio, al año se le aplicó una normalización estándar.
+      </p>
+      <p>
+        Debido a la gran cantidad de muestras en los municipios, se aplicó una
+        capa de
+        <em>embedding</em>
+        para no incrementar la complejidad del modelo exponencialmente. Para
+        ello, se utilzó un
+        <em>LabelEncoder</em> que transforma etiquetas categóricas en valores
+        numéricos, y posteriormente se pasaron estos valores a la capa de
+        <em>embedding</em>.
+      </p>
+      <p>
+        <img src="assets/images/loss.png" alt="Loss Curve" />
+      </p>
+      <center style="color: grey">
+        Figura 1: Entrenamiento y validación a través de las épocas.
+      </center>
+      <p>
+        <img src="assets/images/realvspred.png" alt="Real vs Predicted" />
+      </p>
+      <center style="color: grey">
+        Figura 2: Valores reales vs predicciones para el conjunto de prueba.
+      </center>
+
+      <h2>Observaciones</h2>
+      <p>
+        Al analizar el modelo se puede ver mediante la curva de pérdida que
+        generaliza relativamente bien, sin embargo, al analizar la gráfica de
+        valores reales vs. su predicción, se evidencia que hay valores que el
+        modelo no predice con exactitud, especialmente cuando el índice de
+        violencia es alto.
+      </p>
+
+      <h2>Areas de Oportunidad</h2>
+      <ul>
+        <li>
+          Reducir el proyecto de un enfoque nacional a estatal. Existe mucha
+          variabilidad en el índice de violencia según el estado, y factores
+          como economía, población, clima, y costumbres haciendo que le sea
+          difícil al modelo generalizar. Aislar el problema por estado puede
+          ayudar a capturar mejor las tendencias.
+        </li>
+        <li>
+          Introducir datos que tengan correlación con el índice de violencia
+          podría aumentar la precisión del modelo.
+        </li>
+        <li>
+          Acontecimientos como la pandemia de COVID-19 también afectan los
+          resultados. El modelo actual no toma esto en cuenta, por lo que sería
+          importante incorporarlo.
+        </li>
+        <li>
+          Probar diferentes arquitecturas de redes neuronales podría ayudar a
+          comparar y validar mejoras en el rendimiento.
+        </li>
+      </ul>
+    </main>
+  </body>
+</html>
