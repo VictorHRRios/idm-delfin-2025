@@ -1,6 +1,86 @@
-@import "tailwindcss";
+:root {
+  --bg-color: #1e1e1e;
+  --fg-color: #f5f5f5;
+  --subtle-color: #888;
+  --primary-color: #bb86fc;
+  --input-bg: #2a2a2a;
+  --input-border: #444;
+  --button-bg: #7e57c2;
+  --button-hover: #5c4db1;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--fg-color);
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: var(--fg-color);
+}
+
+h1 {
+  color: var(--primary-color);
+  margin-bottom: 16px;
+  margin-left: 24px;
+}
+
+main {
+  margin: auto;
+  max-width: 60em;
+}
+
+nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  background-color: var(--bg-color);
+  padding: 10px 24px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+nav h1 {
+  margin: 0;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+}
+img {
+  margin: auto;
+  margin-right: auto;
+  margin-left: auto;
+  width: 40em;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.img-tray {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.logo {
+  max-width: min(100%, 180px);
+}
 
 #map {
-	height: 100%;
-	width: 60%;
+  width: 60em;
+  height: 60em;
+}
+
+.results {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 5rem;
+}
+
+form {
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between form elements */
 }

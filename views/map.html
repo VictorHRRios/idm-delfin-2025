@@ -1,120 +1,94 @@
-<html class="h-full">
+<html>
+  <head>
+    <title>BUAP DELFÍN - MAPA DEL ÍNDICE DE VIOLENCIA</title>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
+    <link href="static/styles.css" rel="stylesheet" />
+    <link rel="icon" href="static/buap.ico" type="image/vnd.microsoft.icon" />
+  </head>
 
-<head>
-	<title>BUAP DELFÍN - MAPA DEL ÍNDICE DE VIOLENCIA</title>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
-	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-	<script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
-	<link href="static/output.css" rel="stylesheet">
-	<link rel="icon" href="static/buap.ico" type="image/vnd.microsoft.icon">
+  <body>
+    {{ template "header" . }}
+    <h1>Mapa de Indice de Violencia</h1>
+    <main class="results">
+      {{ template "map" . }} {{ template "mapsettings" . }}
 
-</head>
-
-<body class="dark:bg-gray-800">
-
-	{{ template "header" . }}
-	<div class="h-screen flex">
-
-
-		<div id="loading-notification"
-			class="fixed top-4 left-4 z-50 flex items-center gap-2 rounded-lg bg-blue-100 px-4 py-2 text-sm text-blue-800 shadow-md dark:bg-blue-900 dark:text-blue-100 hidden">
-			<svg class="w-5 h-5 animate-spin text-blue-500 dark:text-blue-300" fill="none"
-				stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-					stroke-width="4"></circle>
-				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z">
-				</path>
-			</svg>
-			<span>Cargando datos...</span>
-		</div>
-		{{ template "map" . }}
-
-		{{ template "mapsettings" . }}
-	</div>
-
-
-
-
-	<script src="static/map.js/"></script>
-</body>
-
+      <script src="static/map.js"></script>
+    </main>
+  </body>
 </html>
 
-
 {{ define "oob-month" }}
-<span class="text-white" id="month-display" hx-swap-oob="true">{{if .}}{{.}}{{else}}1{{end}}</span>
-{{ end }}
+<span id="month-display" hx-swap-oob="true">{{if .}}{{.}}{{else}}1{{end}}</span>
+{{ end }} {{ define "oob-year" }}
+<span id="year-display" hx-swap-oob="true"
+  >{{if .}}{{.}}{{else}}2015{{end}}</span
+>
+{{ end }} {{ define "map" }}
+<div id="map"></div>
+{{ end }} {{ define "mapsettings" }}
 
-{{ define "oob-year" }}
-<span class="text-white" id="year-display" hx-swap-oob="true">{{if .}}{{.}}{{else}}2015{{end}}</span>
-{{ end }}
+<form>
+  <h2 id="loading-notification">Cargando datos...</h2>
+  <label for="year">Año: {{ template "oob-year" . }} </label><br />
+  <input
+    id="year"
+    name="year"
+    type="range"
+    min="2015"
+    max="2029"
+    value="2015"
+    step="1"
+    hx-post="/update-year"
+    hx-trigger="change, input"
+    hx-swap="none"
+  />
+  <br />
+  <label for="month">Mes: {{ template "oob-month" . }} </label><br />
+  <input
+    id="month"
+    name="month"
+    type="range"
+    min="1"
+    max="12"
+    value="1"
+    step="1"
+    hx-post="/update-month"
+    hx-trigger="change, input"
+    hx-swap="none"
+  />
 
-{{ define "map" }}
-<div id="map" class="h-full w-[60%]"></div>
-{{ end }}
-
-{{ define "mapsettings" }}
-<div
-	class="box-border size-1/2 mx-auto w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 relative mb-6">
-	<label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Año: {{ template
-		"oob-year" . }}
-	</label>
-	<input id="year" name="year" type="range" min="2015" max="2029" value="2015" step="1"
-		class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-		hx-post="/update-year" hx-trigger="change, input" hx-swap="none">
-	<label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mes: {{ template
-		"oob-month" . }}
-	</label>
-	<input id="month" name="month" type="range" min="1" max="12" value="1" step="1"
-		class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-		hx-post="/update-month" hx-trigger="change, input" hx-swap="none">
-
-	<div id="prediction-message"
-		class="mt-4 flex items-center justify-center gap-2 rounded-lg border border-yellow-300 bg-yellow-50 px-4 py-2 text-sm text-yellow-800 dark:border-yellow-600 dark:bg-yellow-700/20 dark:text-yellow-300 shadow-sm transition">
-		<svg class="w-5 h-5 text-yellow-500 dark:text-yellow-300" fill="none" stroke="currentColor"
-			stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-			<path stroke-linecap="round" stroke-linejoin="round"
-				d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-		</svg>
-		<span><strong>Nota:</strong> Estas viendo predicciones</span>
-	</div>
-
-	<form id="upload-form" hx-post="/upload" hx-encoding="multipart/form-data" hx-target="#upload-response"
-		class="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6 md:p-8 space-y-4 w-full max-w-sm mx-auto">
-
-		<label for="file" class="block text-sm font-medium text-gray-900 dark:text-white">
-			Subir archivo GeoJSON:
-		</label>
-		<input type="file" name="file" id="file"
-			class="block w-full text-sm text-gray-900 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-		<input type="submit" value="Enviar"
-			class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800 transition">
-	</form>
-
-	<div id="upload-response" class="mt-4 text-sm text-gray-700 dark:text-gray-300 text-center"></div>
-
-</div>
-
+  <div id="prediction-message" style="display: none">
+    <span><strong>Nota:</strong> Estas viendo predicciones</span>
+  </div>
+</form>
 
 <script>
-	function checkPredictionStatus() {
-		const year = parseInt(document.getElementById('year').value);
-		const month = parseInt(document.getElementById('month').value);
-		const message = document.getElementById('prediction-message');
+  function checkPredictionStatus() {
+    const year = parseInt(document.getElementById("year").value);
+    const month = parseInt(document.getElementById("month").value);
+    const message = document.getElementById("prediction-message");
 
-		if (year > 2025 || (year === 2025 && month > 3)) {
-			message.classList.remove('hidden');
-		} else {
-			message.classList.add('hidden');
-		}
-	}
+    if (year > 2025 || (year === 2025 && month > 3)) {
+      message.style.display = "block";
+    } else {
+      message.style.display = "none";
+    }
+  }
 
-	document.getElementById('year').addEventListener('input', checkPredictionStatus);
-	document.getElementById('month').addEventListener('input', checkPredictionStatus);
+  document
+    .getElementById("year")
+    .addEventListener("input", checkPredictionStatus);
+  document
+    .getElementById("month")
+    .addEventListener("input", checkPredictionStatus);
 
-	document.addEventListener('DOMContentLoaded', checkPredictionStatus);
+  document.addEventListener("DOMContentLoaded", checkPredictionStatus);
 </script>
 {{ end }}
